@@ -1,0 +1,41 @@
+# Define stages in a pipeline.
+# available stages are .pre, build, test, package, testVerifyManal, deploy, .post
+stages:
+    - build
+    - test
+    - package
+    - testVerifyManual
+    - deploy
+
+buildJob:
+    stage: build
+    script:
+        - echo "Building"
+        - mkdir build
+        - touch build/info.txt
+    #List of files and directories to attach to a job on success
+    artifacts:
+        paths:
+            - build/
+
+testAutoJob:
+    stage: test
+    script:
+        - echo "Start  Test"
+
+packageJob:
+    stage: package
+    script:
+        - echo "Package step"
+
+testManuelJob:
+    stage: testVerifyManual
+    when: manual
+    script: exit 0
+
+deployJob:
+    stage: deploy
+    script: echo "when should this job run?"
+    needs:
+        -  testManuelJob
+
